@@ -6,78 +6,117 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class SunController : MonoBehaviour
-{   
-    [SerializeField] private float maxLightDistance = 5f;
-    [SerializeField] private GameObject rayPointPrefab;
-    
-    private float _lightDistance;
-    private Vector2 _startDirection;
-    private Dictionary<GameObject, Vector2> _lightOfTheSun; // vat va cham - diem toi
+{
+    [SerializeField] private int maxReflections = 5;
+    [SerializeField] private float maxDistance = 100f;
+    [SerializeField] private LayerMask mirrorLayer;
+    [SerializeField] private LayerMask prismLayer;
 
     private void Start()
     {
-        _lightDistance = maxLightDistance;
-        _startDirection = new Vector2(2, 3);
         
-        _lightOfTheSun = new Dictionary<GameObject, Vector2> { { this.gameObject, _startDirection } };
     }
-    
+
     private void Update()
     {
-        LightToMirror();
-
-        foreach (var light in _lightOfTheSun)
-        {
-            Vector3 startPoint = light.Key.transform.position;
-            Vector3 endPoint = startPoint + (Vector3)(light.Value.normalized * maxLightDistance);
-
-            Debug.DrawLine(startPoint, endPoint, Color.cyan);
-        }
+        ReflectLight(transform.position, new Vector2(2, 3));
     }
 
-
-    private void LightToMirror()
+    Vector2 Refract(Vector2 incoming, Vector2 normal, float n1, float n2)
     {
-        var lastEntry = _lightOfTheSun.Last();
+        float r = n1 / n2;
+        float cosI = -Vector2.Dot(normal, incoming);
+        float sinT2 = r * r * (1f - cosI * cosI);
 
-        Vector3 origin = lastEntry.Key.transform.position;
-        Vector2 direction = lastEntry.Value.normalized;
-
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, maxLightDistance);
-
-        if (hit.collider && hit.collider.CompareTag("Mirror"))
+        if (sinT2 > 1f)
         {
-            Vector2 hitPoint = hit.point;               // điểm va chạm
-            Vector2 incomingDir = direction;             // hướng tới (không đổi)
-            Vector2 normal = hit.normal;
-
-            Vector2 reflectDir = Vector2.Reflect(incomingDir, normal);
-
-            float traveledDistance = Vector2.Distance(origin, hitPoint);
-            float reflectDistance = maxLightDistance - traveledDistance;
-
-            _lightOfTheSun[hit.collider.gameObject] = reflectDir;
-
+            // Tổng phản xạ bên trong
+            return Vector2.Reflect(incoming, normal);
         }
-        else
+
+        float cosT = Mathf.Sqrt(1f - sinT2);
+        return r * incoming + (r * cosI - cosT) * normal;
+    }
+
+    
+    private void ReflectLight(Vector2 startPos, Vector2 direction)
+    {
+        Vector2 origin = startPos; // tia toi
+        Vector2 dir = direction.normalized; // huong cua tia toi
+        float epsilon = 0.01f; // do lech nho de tranh trung va cham
+
+        for (int i = 0; i < maxReflections; i++)
         {
-            // Nếu không trúng, xóa hết ngoại trừ SunController
-            if (_lightOfTheSun.Count > 1)
+            RaycastHit2D hit = Physics2D.Raycast(origin, dir, maxDistance, mirrorLayer);
+
+            if (hit.collider)
             {
-                var firstKey = _lightOfTheSun.First().Key;
-                var keysToRemove = _lightOfTheSun.Keys.Where(k => k != firstKey).ToList();
-                foreach (var key in keysToRemove)
-                {
-                    _lightOfTheSun.Remove(key);
-                }
+                Debug.DrawLine(origin, hit.point, Color.yellow, 0f);
+
+                // tinh phan xa
+                Vector2 normal = hit.normal.normalized;
+                Vector2 incoming = dir;
+                Vector2 reflected = incoming - 2 * Vector2.Dot(incoming, normal) * normal;
+
+                // cap nhap tia tiep theo
+                dir = reflected;
+                origin = hit.point + dir * epsilon;
+            }
+            else
+            {
+                Debug.DrawLine(origin, origin + dir * maxDistance, Color.red, 0f);
+                break;
             }
         }
     }
 
     
-    private void OnDrawGizmos()
+    #region Test
+
+    private void ReflectAndDraw(Vector2 startPos, Vector2 direction)
     {
-        // Gizmos.color = Color.yellow;
-        // Gizmos.DrawRay(transform.position, _direction * _lightDistance);
+        float maxDistance = 100f;
+        LayerMask mirrorLayer = LayerMask.GetMask("Mirror");
+
+        // Raycast từ điểm bắt đầu
+        RaycastHit2D hit = Physics2D.Raycast(startPos, direction.normalized, maxDistance, mirrorLayer);
+
+        if (hit.collider != null)
+        {
+            // Vẽ tia tới (màu vàng)
+            Debug.DrawLine(startPos, hit.point, Color.yellow);
+
+            // Lấy pháp tuyến tại điểm va chạm
+            Vector2 normal = hit.normal.normalized;
+            Vector2 incoming = direction.normalized;
+
+            // Vẽ pháp tuyến (màu xanh lá)
+            Debug.DrawRay(hit.point, normal * 0.5f, Color.green);
+
+            // Tính phản xạ bằng công thức vật lý
+            Vector2 reflected = incoming - 2 * Vector2.Dot(incoming, normal) * normal;
+
+            // Vẽ tia phản xạ (màu xanh dương)
+            Debug.DrawRay(hit.point, reflected * 5f, Color.cyan);
+
+            // In góc tới
+            float dot = Vector2.Dot(normal, incoming);
+            dot = Mathf.Clamp(dot, -1f, 1f); // tránh lỗi do làm tròn
+
+            float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
+
+            // Luôn ép về góc nhỏ nhất
+            if (angle > 90f) angle = 180f - angle;
+
+            Debug.Log($"Góc tới: {angle} độ (vật lý)");
+
+        }
+        else
+        {
+            // Nếu không va chạm, vẽ tia tới cho hết tầm (màu đỏ)
+            Debug.DrawLine(startPos, startPos + direction.normalized * maxDistance, Color.red);
+        }
     }
+
+    #endregion
 }
