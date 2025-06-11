@@ -19,7 +19,8 @@ public class SunController : MonoBehaviour
 
     private void Update()
     {
-        ReflectLight(transform.position, new Vector2(2, 3));
+       // ReflectLight(transform.position, new Vector2(2, 3));
+       Prism(transform.position, new Vector2(2, 3));
     }
 
     Vector2 Refract(Vector2 incoming, Vector2 normal, float n1, float n2)
@@ -30,7 +31,6 @@ public class SunController : MonoBehaviour
 
         if (sinT2 > 1f)
         {
-            // Tổng phản xạ bên trong
             return Vector2.Reflect(incoming, normal);
         }
 
@@ -38,6 +38,47 @@ public class SunController : MonoBehaviour
         return r * incoming + (r * cosI - cosT) * normal;
     }
 
+    
+    private void Prism(Vector2 startPos, Vector2 direction)
+    {
+        Vector2 origin = startPos; // tia toi
+        Vector2 dir = direction.normalized; // huong cua tia toi
+        float epsilon = 0.01f; // do lech nho de tranh trung va cham
+
+        for (int i = 0; i < maxReflections; i++)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(origin, dir, maxDistance, prismLayer);
+            Debug.DrawLine(origin, hit.point, Color.yellow, 0f);
+
+            float nAir = 1.0f;
+            float nGlass = 1.5f;
+
+            Vector2 normalIn = hit.normal;
+            Vector2 refractedIn = Refract(dir, normalIn, nAir, nGlass);
+            Vector2 entryPoint = hit.point + refractedIn * epsilon;
+
+            // Raycast tìm mặt bên kia của lăng kính
+            RaycastHit2D exitHit = Physics2D.Raycast(entryPoint, refractedIn, maxDistance, prismLayer);
+            if (exitHit.collider)
+            {
+                Debug.DrawLine(hit.point, exitHit.point, Color.magenta);
+
+                Vector2 normalOut = exitHit.normal;
+                Vector2 refractedOut = Refract(refractedIn, normalOut, nGlass, nAir);
+                dir = refractedOut;
+                origin = exitHit.point + dir * epsilon;
+            }
+            // else
+            // {
+            //     // Nếu không tìm được mặt bên kia, vẽ tia tiếp tục trong kính
+            //     Debug.DrawLine(hit.point, hit.point + refractedIn * maxDistance, Color.cyan);
+            //     break;
+            // }
+
+        }
+    }
+
+    
     
     private void ReflectLight(Vector2 startPos, Vector2 direction)
     {
