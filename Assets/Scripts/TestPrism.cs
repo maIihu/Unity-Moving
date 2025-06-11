@@ -26,46 +26,77 @@ public class TestPrism : MonoBehaviour
 
     void Update()
     {
-        Ham(lightSource.position, lightDir);
-    }
-
-    private void Ham(Vector2 startPos, Vector2 initialDirection)
-    {
-        Vector2 origin = startPos;
-        Vector2 direction = initialDirection.normalized;
-        float epsilon = 0.1f;
+        Vector2 origin = lightSource.position;
+        Vector2 direction = lightDir.normalized;
+        float epsilon = 0.005f;
 
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, 1000, prismLayer);
+
         if (hit.collider)
         {
-            Debug.DrawLine(origin, hit.point, incidentColor);
+            // Tia tới màu trắng
+            Debug.DrawLine(origin, hit.point, Color.white);
+
+            // Tính vector khúc xạ vào lăng kính
             Vector2 normal = hit.normal.normalized;
-            Vector2 incoming = direction;
-            
-            Vector2 refractedIn = Refract(incoming, normal, n_air, n_glass);
+            Vector2 refractedIn = Refract(direction, normal, n_air, n_glass);
             Vector2 pointIn = hit.point + refractedIn * epsilon;
 
-            RaycastHit2D hit2 = Physics2D.Raycast(pointIn, refractedIn, 1000, prismLayer);
-            if (hit2.collider)
+            // Tia đi trong lăng kính chia thành 7 tia màu
+            Color[] rainbowColors = new Color[]
             {
-                Debug.DrawLine(hit.point, hit2.point, Color.green);
+                Color.red,
+                new Color(1f, 0.5f, 0f), // cam
+                Color.yellow,
+                Color.green,
+                Color.blue,
+                new Color(0.29f, 0f, 0.51f), // chàm
+                Color.magenta // tím
+            };
 
-                Vector2 normalOut = hit2.normal.normalized;
-                
-                Vector2 refractedOut = Refract(refractedIn, normalOut, n_glass, n_air);
-                Debug.DrawRay(hit2.point, refractedOut * 5f, refractedColor);
-            }
-            else
+            float[] refractiveIndices = new float[]
             {
-                Debug.DrawRay(pointIn, refractedIn * 5f, Color.magenta);
+                1.50f, // đỏ
+                1.505f, // cam
+                1.51f, // vàng
+                1.515f, // lục
+                1.52f, // lam
+                1.525f, // chàm
+                1.53f  // tím
+            };
 
+            for (int i = 0; i < 7; i++)
+            {
+                HamRainbow(pointIn, refractedIn, refractiveIndices[i], rainbowColors[i]);
             }
         }
         else
         {
-            Debug.DrawLine(origin, origin + direction * 1000, incidentColor);
+            // Nếu không va chạm, vẽ tia trắng duy nhất
+            Debug.DrawLine(origin, origin + direction * 1000, Color.white);
         }
     }
+
+
+    private void HamRainbow(Vector2 startPos, Vector2 initialDirection, float n_glass_i, Color rayColor)
+    {
+        Vector2 direction = initialDirection.normalized;
+
+        RaycastHit2D hit2 = Physics2D.Raycast(startPos, direction, 1000, prismLayer);
+        if (hit2.collider)
+        {
+            Debug.DrawLine(startPos, hit2.point, rayColor);
+            Vector2 normalOut = hit2.normal.normalized;
+            Vector2 refractedOut = Refract(direction, normalOut, n_glass_i, n_air);
+            Debug.DrawRay(hit2.point, refractedOut * 5f, rayColor);
+        }
+        else
+        {
+            Debug.DrawRay(startPos, direction * 5f, rayColor);
+        }
+    }
+
+
 
     
     Vector2 Refract(Vector2 incident, Vector2 normal, float n1, float n2)
