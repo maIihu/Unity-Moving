@@ -40,6 +40,7 @@ public class Level5 : MonoBehaviour
         CreateObjectPool();
 
         GameObject playerSpawn = Instantiate(player, playerSpawnPoint.position, Quaternion.identity);
+        if (Camera.main != null) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
 
         StartCoroutine(HandleGroundLoop(blueGround, blueActiveTime, blueInactiveTime));
         StartCoroutine(HandleGroundLoop(greenGround, greenActiveTime, greenInactiveTime));

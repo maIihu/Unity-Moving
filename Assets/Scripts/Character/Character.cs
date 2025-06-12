@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
     [SerializeField] private float jumpForce;
     
     [Header("Ground Check")]
-    [SerializeField] private float groundCheckRadius = 0.3f;
+    [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
     
     [Header("Coyote Time")]
@@ -94,6 +94,17 @@ public class Character : MonoBehaviour
     private void GameOver()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
     }
+
+    private void OnDrawGizmos()
+    {
+        if (_groundCheck == null)
+        {
+            _groundCheck = transform.GetChild(0).gameObject;
+        }
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_groundCheck.transform.position, groundCheckRadius);
+    }
+
 }

@@ -13,7 +13,7 @@ public class Level1 : MonoBehaviour
     private void Start()
     {
         GameObject playerSpawn = Instantiate(player, playerSpawnPoint.position, Quaternion.identity);
-//        if (Camera.main != null) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
+        if (Camera.main != null) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
         StartCoroutine(DestroyRedGround());
     }
 

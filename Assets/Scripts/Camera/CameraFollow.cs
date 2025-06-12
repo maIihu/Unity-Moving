@@ -5,15 +5,17 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target; 
     private Vector3 _offset ;
-    private float _smoothSpeed;
-
+    private float _smoothTime;
+    private Vector3 _velocity;
+    
     private void Awake()
     {
         _offset = new Vector3(0f, 0f, -10f);
-        _smoothSpeed = 5f;
+        _smoothTime = 0.25f;
+        _velocity = Vector3.zero;
     }
 
-    void LateUpdate()
+    private void Update()
     {
         MoveCamera();
     }
@@ -22,8 +24,7 @@ public class CameraFollow : MonoBehaviour
     {
         if (!target) return;
 
-        Vector3 desiredPosition = target.position + _offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _smoothSpeed * Time.deltaTime);
-        transform.position = smoothedPosition;
+        Vector3 targetPosition = target.position + _offset;
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, _smoothTime);
     }
 }
