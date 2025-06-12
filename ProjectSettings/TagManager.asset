@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Prism
-  - Mirror
+  - Ground
+  - Border
+  - Arrow
   layers:
   - Default
   - TransparentFX
@@ -17,10 +18,10 @@ TagManager:
   - 
   - 
   - 
-  - Mirror
-  - Prism
   - 
   - 
+  - Ground
+  - Border
   - 
   - 
   - 
