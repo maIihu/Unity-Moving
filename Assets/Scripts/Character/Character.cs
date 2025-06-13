@@ -124,7 +124,9 @@ public class Character : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag(ContainString.ArrowTag)  || other.gameObject.CompareTag(ContainString.LaserTag)) GameOver();
+        if (other.gameObject.CompareTag(ContainString.ArrowTag)  || 
+            other.gameObject.CompareTag(ContainString.LaserTag) ||
+            other.gameObject.CompareTag(ContainString.BotTag)) GameOver();
     }
 
     private void GameOver()

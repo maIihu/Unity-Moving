@@ -19,12 +19,24 @@ public class YellowLevel : MonoBehaviour
 
     private void HandleYellowGround()
     {
-        if (bot.activeSelf) bot.SetActive(false);
-        else bot.SetActive(true);
+        if (bot != null)
+            bot.SetActive(!bot.activeSelf);
+
         foreach (var item in yellowGround)
         {
-            if(item.activeSelf) item.SetActive(false);
-            else item.SetActive(true);
+            ToggleObject(item);
         }
     }
+
+    private void ToggleObject(GameObject obj)
+    {
+        if (obj == null) return;
+
+        var col = obj.GetComponent<Collider2D>();
+        var render = obj.GetComponent<SpriteRenderer>();
+
+        if (col != null) col.enabled = !col.enabled;
+        if (render != null) render.enabled = !render.enabled;
+    }
+
 }

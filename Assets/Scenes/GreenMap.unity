@@ -2082,7 +2082,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1440426682}
   - component: {fileID: 1440426683}
-  - component: {fileID: 1440426684}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -2129,19 +2128,9 @@ MonoBehaviour:
   inactiveTime: 2
   player: {fileID: 3958857987525999341, guid: e7f2e13b9fa3ba74898813e27e56f303, type: 3}
   playerSpawnPoint: {fileID: 1299115838}
---- !u!114 &1440426684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1440426681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94c9d99dd1e2425eb87e8fb533922d19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  spawnPoint: {fileID: 1795579524}
+  bot: {fileID: 6297985728623836299, guid: 1e7c8a88d3eb70e45add812c9c071d99, type: 3}
+  timeToSpawnBot: 2
 --- !u!1 &1554842545
 GameObject:
   m_ObjectHideFlags: 0
@@ -2300,6 +2289,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &1795579523
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1795579524}
+  m_Layer: 0
+  m_Name: BallBot Point
+  m_TagString: Bot
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1795579524
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795579523}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1823868554
 GameObject:
   m_ObjectHideFlags: 0
@@ -2626,3 +2646,4 @@ SceneRoots:
   - {fileID: 1440426682}
   - {fileID: 1299115838}
   - {fileID: 1219535988}
+  - {fileID: 1795579524}

@@ -4,17 +4,30 @@ using UnityEngine;
 
 public class GreenLevel : MonoBehaviour
 {
+    [Header("Block")]
     [SerializeField] private GameObject[] greenGround;
     [SerializeField] private float activeTime;
     [SerializeField] private float inactiveTime;
+    
+    [Header("Player")]
     [SerializeField] private GameObject player;
     [SerializeField] private Transform playerSpawnPoint;
+    
+    [Header("Bot")]
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private GameObject bot;
+    [SerializeField] private float timeToSpawnBot;
+
+    private Transform _playerSpawn;
+    
     private void Start()
     {
         GameObject playerSpawn = Instantiate(player, playerSpawnPoint.position, Quaternion.identity);
         if (Camera.main) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
+        _playerSpawn = playerSpawn.transform;
         
         StartCoroutine(HandleGroundLoop(greenGround, activeTime, inactiveTime));
+        StartCoroutine(SpawnBot());
     }
     
     private IEnumerator HandleGroundLoop(GameObject[] groundBlocks, float activeTime, float inactiveTime)
@@ -36,4 +49,12 @@ public class GreenLevel : MonoBehaviour
             yield return new WaitForSeconds(inactiveTime);
         }
     }
+
+    private IEnumerator SpawnBot()
+    {
+        yield return new WaitForSeconds(timeToSpawnBot);
+        GameObject botClone = Instantiate(bot, spawnPoint.position, Quaternion.identity);
+        botClone.GetComponent<BotInGreenMap>().player = _playerSpawn;
+    }
+    
 }
