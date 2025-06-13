@@ -8,6 +8,7 @@ public class YellowLevel : MonoBehaviour
     [SerializeField] private float timeToHandle;
     [SerializeField] private GameObject player;
     [SerializeField] private Transform playerSpawnPoint;
+    [SerializeField] private GameObject bot;
 
     private void Start()
     {
@@ -18,6 +19,8 @@ public class YellowLevel : MonoBehaviour
 
     private void HandleYellowGround()
     {
+        if (bot.activeSelf) bot.SetActive(false);
+        else bot.SetActive(true);
         foreach (var item in yellowGround)
         {
             if(item.activeSelf) item.SetActive(false);

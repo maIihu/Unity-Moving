@@ -7,5 +7,6 @@ public static class ContainString
     public const string ArrowTag = "Arrow";
     public const string TrapTag = "Trap";
     public const string LaserTag = "Laser";
-    
+    public const string BotTag = "Bot";
+
 }

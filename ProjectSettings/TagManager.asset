@@ -9,6 +9,7 @@ TagManager:
   - Arrow
   - Trap
   - Laser
+  - Bot
   layers:
   - Default
   - TransparentFX
