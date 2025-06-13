@@ -8,6 +8,7 @@ TagManager:
   - Border
   - Arrow
   - Trap
+  - Laser
   layers:
   - Default
   - TransparentFX

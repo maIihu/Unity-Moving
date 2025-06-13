@@ -40,10 +40,10 @@ public class Arrow : MonoBehaviour
         _rb.velocity = Vector3.zero;
         gameObject.SetActive(false);
 
-        Level6 level6 = FindObjectOfType<Level6>();
-        if (level6 != null)
+        IndigoLevel indigoLevel = FindObjectOfType<IndigoLevel>();
+        if (indigoLevel != null)
         {
-            level6.ReturnArrowToPool(gameObject);
+            indigoLevel.ReturnArrowToPool(gameObject);
         }
     }
 }

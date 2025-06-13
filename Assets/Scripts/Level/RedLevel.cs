@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level1 : MonoBehaviour
+public class RedLevel : MonoBehaviour
 {
     [SerializeField] private GameObject[] redGround;
     [SerializeField] private float timeToDestroy;

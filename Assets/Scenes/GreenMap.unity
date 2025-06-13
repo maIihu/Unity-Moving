@@ -2125,6 +2125,8 @@ MonoBehaviour:
   - {fileID: 1995243505}
   - {fileID: 372418826}
   - {fileID: 107754570}
+  activeTime: 2
+  inactiveTime: 2
   player: {fileID: 3958857987525999341, guid: e7f2e13b9fa3ba74898813e27e56f303, type: 3}
   playerSpawnPoint: {fileID: 1299115838}
 --- !u!114 &1440426684

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level5 : MonoBehaviour
+public class BlueLevel : MonoBehaviour
 {
     [SerializeField] private GameObject[] blueGround;
     [SerializeField] private float activeTime;

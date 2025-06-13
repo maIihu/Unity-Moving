@@ -119,15 +119,12 @@ public class Character : MonoBehaviour
     {
         if (other.gameObject.CompareTag(ContainString.BorderTag) ||
              other.gameObject.CompareTag(ContainString.TrapTag))
-
-        {
             GameOver();
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag(ContainString.ArrowTag)) GameOver();
+        if (other.gameObject.CompareTag(ContainString.ArrowTag)  || other.gameObject.CompareTag(ContainString.LaserTag)) GameOver();
     }
 
     private void GameOver()

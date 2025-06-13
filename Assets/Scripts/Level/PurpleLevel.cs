@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level7 : MonoBehaviour
+public class PurpleLevel : MonoBehaviour
 {
     [Header("Block Blue")]
     [SerializeField] private GameObject[] blueGround;
