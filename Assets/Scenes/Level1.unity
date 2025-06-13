@@ -624,7 +624,7 @@ MonoBehaviour:
   - {fileID: 1546290229}
   - {fileID: 909667272}
   - {fileID: 446926562}
-  timeToDestroy: 3.5
+  timeToDestroy: 3.55
   player: {fileID: 3958857987525999341, guid: e7f2e13b9fa3ba74898813e27e56f303, type: 3}
   playerSpawnPoint: {fileID: 1233296978}
 --- !u!1 &861134353

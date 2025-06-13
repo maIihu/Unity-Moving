@@ -5,6 +5,7 @@ using System.Numerics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class Character : MonoBehaviour
 {
@@ -23,17 +24,25 @@ public class Character : MonoBehaviour
     [SerializeField] private float jumpBufferTime = 0.2f;
 
     private float _jumpBufferCounter;
-
     private float _coyoteTimeCounter;
     
     private Rigidbody2D _rb;
+    private Animator _anim;
     private GameObject _groundCheck;
+    
     private float _moveInput;
+    private bool _isFacingRight;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
         _groundCheck = transform.GetChild(0).gameObject;
+    }
+
+    private void Start()
+    {
+        _isFacingRight = true;
     }
 
     private void Update()
@@ -70,13 +79,37 @@ public class Character : MonoBehaviour
             _coyoteTimeCounter = 0;
         }
         
+        if ((_isFacingRight && _moveInput < 0) || (!_isFacingRight && _moveInput > 0))
+        {
+            Flip();
+        }
+        
+        UpdateAnimation();
+    }
+
+    private void Flip()
+    {
+        _isFacingRight = !_isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1;
+        transform.localScale = localScale;
+    }
+    private void UpdateAnimation()
+    {
+        float speed = Mathf.Abs(_moveInput); 
+        bool isGrounded = IsGrounded();
+        float yVelocity = _rb.velocity.y;
+
+        _anim.SetFloat("Speed", speed);
+        _anim.SetBool("IsGrounded", isGrounded);
+        _anim.SetFloat("VerticalVelocity", yVelocity);
     }
 
     private void FixedUpdate()
     {
         _rb.velocity = new Vector2(_moveInput * moveSpeed, _rb.velocity.y);
     }
-
+    
     private bool IsGrounded()
     {
         return Physics2D.OverlapCircle(_groundCheck.transform.position, groundCheckRadius, groundLayer);
@@ -84,11 +117,17 @@ public class Character : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag(ContainString.BorderTag) || 
-            other.gameObject.CompareTag(ContainString.ArrowTag))
+        if (other.gameObject.CompareTag(ContainString.BorderTag) ||
+             other.gameObject.CompareTag(ContainString.TrapTag))
+
         {
             GameOver();
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag(ContainString.ArrowTag)) GameOver();
     }
 
     private void GameOver()
@@ -106,5 +145,5 @@ public class Character : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_groundCheck.transform.position, groundCheckRadius);
     }
-
+    
 }
