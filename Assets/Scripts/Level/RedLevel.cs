@@ -20,6 +20,17 @@ public class RedLevel : MonoBehaviour
     private IEnumerator DestroyRedGround()
     {
         yield return new WaitForSeconds(timeToDestroy);
-        foreach (var item in redGround) item.SetActive(false);
+        foreach (var item in redGround) ToggleObject(item);
+    }
+    
+    private void ToggleObject(GameObject obj)
+    {
+        if (obj == null) return;
+
+        var col = obj.GetComponent<Collider2D>();
+        var render = obj.GetComponent<SpriteRenderer>();
+
+        if (col != null) col.enabled = !col.enabled;
+        if (render != null) render.enabled = !render.enabled;
     }
 }

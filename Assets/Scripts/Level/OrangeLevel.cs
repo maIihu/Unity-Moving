@@ -39,9 +39,19 @@ public class OrangeLevel : MonoBehaviour
     {
         foreach (var item in yellowGround)
         {
-            if(item.activeSelf) item.SetActive(false);
-            else item.SetActive(true);
+            ToggleObject(item);
         }
+    }
+    
+    private void ToggleObject(GameObject obj)
+    {
+        if (obj == null) return;
+
+        var col = obj.GetComponent<Collider2D>();
+        var render = obj.GetComponent<SpriteRenderer>();
+
+        if (col != null) col.enabled = !col.enabled;
+        if (render != null) render.enabled = !render.enabled;
     }
     
     private IEnumerator HandleGroundLoop(GameObject[] groundBlocks, float activeTime, float inactiveTime)

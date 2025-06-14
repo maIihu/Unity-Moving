@@ -36,20 +36,31 @@ public class GreenLevel : MonoBehaviour
         {
             foreach (var block in groundBlocks)
             {
-                block.SetActive(true);
+                SetObjectVisible(block, true);
             }
 
             yield return new WaitForSeconds(activeTime);
 
             foreach (var block in groundBlocks)
             {
-                block.SetActive(false);
+                SetObjectVisible(block, false);
             }
 
             yield return new WaitForSeconds(inactiveTime);
         }
     }
+    
+    private void SetObjectVisible(GameObject obj, bool isVisible)
+    {
+        if (obj == null) return;
 
+        var col = obj.GetComponent<Collider2D>();
+        var render = obj.GetComponent<SpriteRenderer>();
+
+        if (col != null) col.enabled = isVisible;
+        if (render != null) render.enabled = isVisible;
+    }
+    
     private IEnumerator SpawnBot()
     {
         yield return new WaitForSeconds(timeToSpawnBot);
