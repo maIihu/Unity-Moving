@@ -69,4 +69,10 @@ public class MenuGameManager : MonoBehaviour
         GameManager.Instance.ChangeState(GameState.Playing);
         SceneManager.LoadScene("PurpleMap");    
     }
+
+    public void ButtonHome()
+    {
+        GameManager.Instance.ChangeState(GameState.Playing);
+        SceneManager.LoadScene("HomeScene");
+    }
 }

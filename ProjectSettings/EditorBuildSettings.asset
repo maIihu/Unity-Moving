@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/YellowMap.unity
     guid: 2772c4324a8af384daa744045a3a0198
+  - enabled: 1
+    path: Assets/Scenes/HomeScene.unity
+    guid: 5c503bbe5306d9046b1ea3e591d01252
   m_configObjects: {}

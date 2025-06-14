@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class BlueLevel : MonoBehaviour
 {
-    [SerializeField] private GameObject[] blueGround;
+    [Header("Blue Block")] [SerializeField]
+    private GameObject[] blueGround;
     [SerializeField] private float activeTime;
     [SerializeField] private float inactiveTime;
+    
+    [Header("Player")] 
     [SerializeField] private GameObject player;
     [SerializeField] private Transform playerSpawnPoint;
+    
+    [Header("Arrow")] 
+    [SerializeField] private GameObject[] arrowPoint;
+    [SerializeField] private float spawnTime;
+    [SerializeField] private GameObject arrowPrefab;
     
     private void Start()
     {
         GameObject playerSpawn = Instantiate(player, playerSpawnPoint.position, Quaternion.identity);
-        if (Camera.main != null) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
+        if (Camera.main) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
         StartCoroutine(HandleGroundLoop(blueGround, activeTime, inactiveTime));
+        StartCoroutine(SpawnArrow());
     }
 
     private IEnumerator HandleGroundLoop(GameObject[] groundBlocks, float activeTime, float inactiveTime)
@@ -36,15 +45,28 @@ public class BlueLevel : MonoBehaviour
             yield return new WaitForSeconds(inactiveTime);
         }
     }
-    
+
     private void SetObjectVisible(GameObject obj, bool isVisible)
     {
-        if (obj == null) return;
+        if (!obj) return;
 
         var col = obj.GetComponent<Collider2D>();
         var render = obj.GetComponent<SpriteRenderer>();
 
-        if (col != null) col.enabled = isVisible;
-        if (render != null) render.enabled = isVisible;
+        if (col) col.enabled = isVisible;
+        if (render) render.enabled = isVisible;
     }
+
+    private IEnumerator SpawnArrow()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(spawnTime);
+            foreach (var arrow in arrowPoint)
+            {
+                Instantiate(arrowPrefab, arrow.transform.position, Quaternion.identity);
+            }
+        }
+    }
+
 }

@@ -19,8 +19,7 @@ public class YellowLevel : MonoBehaviour
 
     private void HandleYellowGround()
     {
-        if (bot != null)
-            bot.SetActive(!bot.activeSelf);
+        if (bot) bot.SetActive(!bot.activeSelf);
 
         foreach (var item in yellowGround)
         {

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    [SerializeField] private float movementThreshold = 0.05f;
+
     public Transform target; 
     private Vector3 _offset ;
     private float _smoothTime;
@@ -25,6 +27,12 @@ public class CameraFollow : MonoBehaviour
         if (!target) return;
 
         Vector3 targetPosition = target.position + _offset;
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, _smoothTime);
+        float distance = Vector3.Distance(transform.position, targetPosition);
+
+        if (distance > movementThreshold)
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, _smoothTime);
+        }
     }
+
 }

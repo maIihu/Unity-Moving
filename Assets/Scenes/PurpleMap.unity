@@ -807,7 +807,7 @@ MonoBehaviour:
   - {fileID: 317476299}
   - {fileID: 1075655947}
   - {fileID: 1649829230}
-  greenActiveTime: 4.2
+  greenActiveTime: 4.7
   greenInactiveTime: 1
   greenInitialDelay: 0.2
   player: {fileID: 3958857987525999341, guid: e7f2e13b9fa3ba74898813e27e56f303, type: 3}
@@ -1406,6 +1406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94c9d99dd1e2425eb87e8fb533922d19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementThreshold: 0.05
   target: {fileID: 0}
 --- !u!1 &791268444
 GameObject:

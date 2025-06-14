@@ -1123,6 +1123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94c9d99dd1e2425eb87e8fb533922d19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementThreshold: 0.05
   target: {fileID: 0}
 --- !u!1 &804284122
 GameObject:
@@ -2615,6 +2616,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 97829879003185032, guid: aa4d85a75b004e74f8c904c4e9fdff45, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 51a4f1157b7ff1449b5e5cf064d584c7, type: 3}
     - target: {fileID: 5827214250606835350, guid: aa4d85a75b004e74f8c904c4e9fdff45, type: 3}
       propertyPath: m_Pivot.x
       value: 0

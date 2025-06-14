@@ -43,13 +43,13 @@ public class OrangeLevel : MonoBehaviour
     
     private void ToggleObject(GameObject obj)
     {
-        if (obj == null) return;
+        if (!obj) return;
 
         var col = obj.GetComponent<Collider2D>();
         var render = obj.GetComponent<SpriteRenderer>();
 
-        if (col != null) col.enabled = !col.enabled;
-        if (render != null) render.enabled = !render.enabled;
+        if (col) col.enabled = !col.enabled;
+        if (render) render.enabled = !render.enabled;
     }
     
     private IEnumerator HandleGroundLoop(GameObject[] groundBlocks, float activeTime, float inactiveTime)
@@ -58,19 +58,28 @@ public class OrangeLevel : MonoBehaviour
         {
             foreach (var block in groundBlocks)
             {
-                block.SetActive(true);
+                SetObjectVisible(block, true);
             }
 
             yield return new WaitForSeconds(activeTime);
 
             foreach (var block in groundBlocks)
             {
-                block.SetActive(false);
+                SetObjectVisible(block, false);
             }
 
             yield return new WaitForSeconds(inactiveTime);
         }
     }
-    
+    private void SetObjectVisible(GameObject obj, bool isVisible)
+    {
+        if (!obj) return;
+
+        var col = obj.GetComponent<Collider2D>();
+        var render = obj.GetComponent<SpriteRenderer>();
+
+        if (col) col.enabled = isVisible;
+        if (render) render.enabled = isVisible;
+    }
     
 }
