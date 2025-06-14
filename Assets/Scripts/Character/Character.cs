@@ -127,16 +127,26 @@ public class Character : MonoBehaviour
         if (other.gameObject.CompareTag(ContainString.ArrowTag)  || 
             other.gameObject.CompareTag(ContainString.LaserTag) ||
             other.gameObject.CompareTag(ContainString.BotTag)) GameOver();
+
+        if (other.gameObject.CompareTag("Present"))
+            CompleteLevel();
     }
 
+    private void CompleteLevel()
+    {
+        Debug.Log("Won");
+        LevelGameManager.Instance.CompleteLevel();
+    }
+    
     private void GameOver()
     {
+        //LevelGameManager.Instance.GameOver();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void OnDrawGizmos()
     {
-        if (_groundCheck == null)
+        if (!_groundCheck)
         {
             _groundCheck = transform.GetChild(0).gameObject;
         }

@@ -8,13 +8,11 @@ public class OrangeLevel : MonoBehaviour
     [SerializeField] private GameObject[] yellowGround;
     [SerializeField] private float yellowActiveTime;
     [SerializeField] private float yellowInactiveTime;
-    [SerializeField] private float yellowInitialDelay = 0.3f;
 
     [Header("Block Red")]
     [SerializeField] private GameObject[] redGround;
     [SerializeField] private float redActiveTime;
     [SerializeField] private float redInactiveTime;
-    [SerializeField] private float redInitialDelay = 0.2f;
     
     [Header("Red Laser")]
     [SerializeField] private GameObject[] redLaser;
