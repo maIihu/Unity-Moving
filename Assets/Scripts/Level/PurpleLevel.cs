@@ -40,16 +40,12 @@ public class PurpleLevel : MonoBehaviour
         while (true)
         {
             foreach (var block in groundBlocks)
-            {
                 SetObjectVisible(block, true);
-            }
 
             yield return new WaitForSeconds(activeTime);
 
             foreach (var block in groundBlocks)
-            {
                 SetObjectVisible(block, false);
-            }
 
             yield return new WaitForSeconds(inactiveTime);
         }
@@ -57,12 +53,12 @@ public class PurpleLevel : MonoBehaviour
     
     private void SetObjectVisible(GameObject obj, bool isVisible)
     {
-        if (obj == null) return;
+        if (!obj) return;
 
         var col = obj.GetComponent<Collider2D>();
         var render = obj.GetComponent<SpriteRenderer>();
 
-        if (col != null) col.enabled = isVisible;
-        if (render != null) render.enabled = isVisible;
+        if (col) col.enabled = isVisible;
+        if (render) render.enabled = isVisible;
     }
 }

@@ -6,7 +6,8 @@ using UnityEngine;
 public class RedLevel : MonoBehaviour
 {
     [SerializeField] private GameObject[] redGround;
-    [SerializeField] private float timeToDestroy;
+    [SerializeField] private float activeTime;
+    [SerializeField] private float inactiveTime;
     [SerializeField] private GameObject player;
     [SerializeField] private Transform playerSpawnPoint;
 
@@ -14,23 +15,33 @@ public class RedLevel : MonoBehaviour
     {
         GameObject playerSpawn = Instantiate(player, playerSpawnPoint.position, Quaternion.identity);
         if (Camera.main) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
-        StartCoroutine(DestroyRedGround());
+        StartCoroutine(HandleGroundLoop(redGround, activeTime, inactiveTime));    
     }
 
-    private IEnumerator DestroyRedGround()
+    private IEnumerator HandleGroundLoop(GameObject[] groundBlocks, float activeTime, float inactiveTime)
     {
-        yield return new WaitForSeconds(timeToDestroy);
-        foreach (var item in redGround) ToggleObject(item);
+        while (true)
+        {
+            foreach (var block in groundBlocks)
+                SetObjectVisible(block, true);
+
+            yield return new WaitForSeconds(activeTime);
+
+            foreach (var block in groundBlocks)
+                SetObjectVisible(block, false);
+
+            yield return new WaitForSeconds(inactiveTime);
+        }
     }
     
-    private void ToggleObject(GameObject obj)
+    private void SetObjectVisible(GameObject obj, bool isVisible)
     {
-        if (obj == null) return;
+        if (!obj) return;
 
         var col = obj.GetComponent<Collider2D>();
         var render = obj.GetComponent<SpriteRenderer>();
 
-        if (col != null) col.enabled = !col.enabled;
-        if (render != null) render.enabled = !render.enabled;
+        if (col) col.enabled = isVisible;
+        if (render) render.enabled = isVisible;
     }
 }
