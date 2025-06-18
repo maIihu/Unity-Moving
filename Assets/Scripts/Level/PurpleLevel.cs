@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PurpleLevel : MonoBehaviour
+public class PurpleLevel : BaseLevel
 {
     [Header("Block Blue")]
     [SerializeField] private GameObject[] blueGround;
@@ -16,14 +16,9 @@ public class PurpleLevel : MonoBehaviour
     [SerializeField] private float greenInactiveTime;
     [SerializeField] private float greenInitialDelay = 0.2f;
     
-    [Header("Player")]
-    [SerializeField] private GameObject player;
-    [SerializeField] private Transform playerSpawnPoint;
-    
     private void Start()
     {
-        GameObject playerSpawn = Instantiate(player, playerSpawnPoint.position, Quaternion.identity);
-        if (Camera.main) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
+        SpawnPlayer();
         StartCoroutine(DelayedGroundLoop(blueGround, blueActiveTime, blueInactiveTime, blueInitialDelay));
         StartCoroutine(DelayedGroundLoop(greenGround, greenActiveTime, greenInactiveTime, greenInitialDelay));
     }
@@ -35,30 +30,4 @@ public class PurpleLevel : MonoBehaviour
     }
 
     
-    private IEnumerator HandleGroundLoop(GameObject[] groundBlocks, float activeTime, float inactiveTime)
-    {
-        while (true)
-        {
-            foreach (var block in groundBlocks)
-                SetObjectVisible(block, true);
-
-            yield return new WaitForSeconds(activeTime);
-
-            foreach (var block in groundBlocks)
-                SetObjectVisible(block, false);
-
-            yield return new WaitForSeconds(inactiveTime);
-        }
-    }
-    
-    private void SetObjectVisible(GameObject obj, bool isVisible)
-    {
-        if (!obj) return;
-
-        var col = obj.GetComponent<Collider2D>();
-        var render = obj.GetComponent<SpriteRenderer>();
-
-        if (col) col.enabled = isVisible;
-        if (render) render.enabled = isVisible;
-    }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IndigoLevel : MonoBehaviour
+public class IndigoLevel : BaseLevel
 {
     [Header("Block Blue")]
     [SerializeField] private GameObject[] blueGround;
@@ -27,11 +27,7 @@ public class IndigoLevel : MonoBehaviour
     [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private float timeToSpawn; 
     [SerializeField] private float delayBetweenFirstAndRest  = 0.4f;
-
-    [Header("Player")]
-    [SerializeField] private GameObject player;
-    [SerializeField] private Transform playerSpawnPoint;
-
+    
     [SerializeField] private Transform arrowContainer;
     
     private Queue<GameObject> _arrowPool;
@@ -42,9 +38,8 @@ public class IndigoLevel : MonoBehaviour
         _arrowPool = new Queue<GameObject>();
         CreateObjectPool();
 
-        GameObject playerSpawn = Instantiate(player, playerSpawnPoint.position, Quaternion.identity);
-        if (Camera.main != null) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
-
+        SpawnPlayer();
+        
         StartCoroutine(DelayedGroundLoop(blueGround, blueActiveTime, blueInactiveTime, blueInitialDelay));
         StartCoroutine(DelayedGroundLoop(greenGround, greenActiveTime, greenInactiveTime, greenInitialDelay));
         StartCoroutine(DelayedGroundLoop(purpleGround, purpleActiveTime, purpleInactiveTime, purpleInitialDelay));
@@ -80,39 +75,6 @@ public class IndigoLevel : MonoBehaviour
         yield return new WaitForSeconds(delay);
         yield return StartCoroutine(HandleGroundLoop(groundBlocks, activeTime, inactiveTime));
     }
-
-    
-    private IEnumerator HandleGroundLoop(GameObject[] groundBlocks, float activeTime, float inactiveTime)
-    {
-        while (true)
-        {
-            foreach (var block in groundBlocks)
-            {
-                SetObjectVisible(block, true);
-            }
-
-            yield return new WaitForSeconds(activeTime);
-
-            foreach (var block in groundBlocks)
-            {
-                SetObjectVisible(block, false);
-            }
-
-            yield return new WaitForSeconds(inactiveTime);
-        }
-    }
-    
-    private void SetObjectVisible(GameObject obj, bool isVisible)
-    {
-        if (obj == null) return;
-
-        var col = obj.GetComponent<Collider2D>();
-        var render = obj.GetComponent<SpriteRenderer>();
-
-        if (col != null) col.enabled = isVisible;
-        if (render != null) render.enabled = isVisible;
-    }
-
     
     private IEnumerator SpawnArrowLoop()
     {
@@ -139,8 +101,7 @@ public class IndigoLevel : MonoBehaviour
             arrow.transform.rotation = Quaternion.identity;
         }
     }
-
-
+    
     public void ReturnArrowToPool(GameObject arrow)
     {
         arrow.SetActive(false);

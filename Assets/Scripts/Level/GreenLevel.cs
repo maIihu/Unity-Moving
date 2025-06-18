@@ -2,16 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GreenLevel : MonoBehaviour
+public class GreenLevel : BaseLevel
 {
     [Header("Block")]
     [SerializeField] private GameObject[] greenGround;
     [SerializeField] private float activeTime;
     [SerializeField] private float inactiveTime;
-    
-    [Header("Player")]
-    [SerializeField] private GameObject player;
-    [SerializeField] private Transform playerSpawnPoint;
     
     [Header("Bot")]
     [SerializeField] private Transform spawnPoint;
@@ -28,37 +24,6 @@ public class GreenLevel : MonoBehaviour
         
         StartCoroutine(HandleGroundLoop(greenGround, activeTime, inactiveTime));
         StartCoroutine(SpawnBot());
-    }
-    
-    private IEnumerator HandleGroundLoop(GameObject[] groundBlocks, float activeTime, float inactiveTime)
-    {
-        while (true)
-        {
-            foreach (var block in groundBlocks)
-            {
-                SetObjectVisible(block, true);
-            }
-
-            yield return new WaitForSeconds(activeTime);
-
-            foreach (var block in groundBlocks)
-            {
-                SetObjectVisible(block, false);
-            }
-
-            yield return new WaitForSeconds(inactiveTime);
-        }
-    }
-    
-    private void SetObjectVisible(GameObject obj, bool isVisible)
-    {
-        if (obj == null) return;
-
-        var col = obj.GetComponent<Collider2D>();
-        var render = obj.GetComponent<SpriteRenderer>();
-
-        if (col != null) col.enabled = isVisible;
-        if (render != null) render.enabled = isVisible;
     }
     
     private IEnumerator SpawnBot()

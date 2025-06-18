@@ -1087,6 +1087,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e079611601e865a44a43f83756542fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 3958857987525999341, guid: e7f2e13b9fa3ba74898813e27e56f303, type: 3}
+  playerSpawnPoint: {fileID: 361774614}
   yellowGround:
   - {fileID: 1051987634}
   - {fileID: 2019199117}
@@ -1096,7 +1098,7 @@ MonoBehaviour:
   - {fileID: 679588781}
   - {fileID: 1768083775}
   - {fileID: 1533230673}
-  yellowActiveTime: 4
+  yellowActiveTime: 3
   yellowInactiveTime: 1.5
   redGround:
   - {fileID: 89388025}
@@ -1108,8 +1110,6 @@ MonoBehaviour:
   - {fileID: 2006097671}
   - {fileID: 626852902}
   - {fileID: 1289354968}
-  player: {fileID: 3958857987525999341, guid: e7f2e13b9fa3ba74898813e27e56f303, type: 3}
-  playerSpawnPoint: {fileID: 361774614}
 --- !u!1 &361774613
 GameObject:
   m_ObjectHideFlags: 0

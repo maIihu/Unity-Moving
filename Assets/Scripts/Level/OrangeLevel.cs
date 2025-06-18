@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrangeLevel : MonoBehaviour
+public class OrangeLevel : BaseLevel
 {
     [Header("Block Yellow")]
     [SerializeField] private GameObject[] yellowGround;
@@ -17,69 +17,16 @@ public class OrangeLevel : MonoBehaviour
     [Header("Red Laser")]
     [SerializeField] private GameObject[] redLaser;
     
-    [Header("Player")]
-    [SerializeField] private GameObject player;
-    [SerializeField] private Transform playerSpawnPoint;
     
     private void Start()
     {
-
-        GameObject playerSpawn = Instantiate(player, playerSpawnPoint.position, Quaternion.identity);
-        if (Camera.main != null) Camera.main.GetComponent<CameraFollow>().target = playerSpawn.transform;
+        SpawnPlayer();
         
-        InvokeRepeating(nameof(HandleYellowGround), yellowInactiveTime, yellowInactiveTime * 2);
+        StartCoroutine(HandleGroundLoop(yellowGround, yellowActiveTime, yellowInactiveTime));
         StartCoroutine(HandleGroundLoop(redGround, redActiveTime, redInactiveTime));
         StartCoroutine(HandleGroundLoop(redLaser, redActiveTime, redInactiveTime));
         
     }
     
-    private void HandleYellowGround()
-    {
-        foreach (var item in yellowGround)
-        {
-            ToggleObject(item);
-        }
-    }
-    
-    private void ToggleObject(GameObject obj)
-    {
-        if (!obj) return;
-
-        var col = obj.GetComponent<Collider2D>();
-        var render = obj.GetComponent<SpriteRenderer>();
-
-        if (col) col.enabled = !col.enabled;
-        if (render) render.enabled = !render.enabled;
-    }
-    
-    private IEnumerator HandleGroundLoop(GameObject[] groundBlocks, float activeTime, float inactiveTime)
-    {
-        while (true)
-        {
-            foreach (var block in groundBlocks)
-            {
-                SetObjectVisible(block, true);
-            }
-
-            yield return new WaitForSeconds(activeTime);
-
-            foreach (var block in groundBlocks)
-            {
-                SetObjectVisible(block, false);
-            }
-
-            yield return new WaitForSeconds(inactiveTime);
-        }
-    }
-    private void SetObjectVisible(GameObject obj, bool isVisible)
-    {
-        if (!obj) return;
-
-        var col = obj.GetComponent<Collider2D>();
-        var render = obj.GetComponent<SpriteRenderer>();
-
-        if (col) col.enabled = isVisible;
-        if (render) render.enabled = isVisible;
-    }
     
 }
