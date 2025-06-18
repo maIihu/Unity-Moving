@@ -41,7 +41,7 @@ public class Arrow : MonoBehaviour
         gameObject.SetActive(false);
 
         IndigoLevel indigoLevel = FindObjectOfType<IndigoLevel>();
-        if (indigoLevel != null)
+        if (indigoLevel)
         {
             indigoLevel.ReturnArrowToPool(gameObject);
         }

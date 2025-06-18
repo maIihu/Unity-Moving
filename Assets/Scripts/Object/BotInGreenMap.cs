@@ -7,11 +7,11 @@ public class BotInGreenMap : MonoBehaviour
     public Transform player;
     [SerializeField] private float moveSpeed = 2f;
 
-    private Rigidbody2D rb;
+    private Rigidbody2D _rb;
 
-    private void Start()
+    private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -23,7 +23,7 @@ public class BotInGreenMap : MonoBehaviour
     {
         if (!player) return;
         Vector2 direction = (player.position - transform.position).normalized;
-        rb.velocity = direction * moveSpeed;
+        _rb.velocity = direction * moveSpeed;
     }
     
 }
