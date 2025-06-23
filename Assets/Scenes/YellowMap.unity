@@ -1074,7 +1074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aheadCheck: {fileID: 992220719}
-  moveSpeed: 3
+  moveSpeed: 5
   checkDistance: 0.5
   groundLayer:
     serializedVersion: 2
@@ -1693,6 +1693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94c9d99dd1e2425eb87e8fb533922d19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementThreshold: 0.05
   target: {fileID: 0}
 --- !u!1 &795382869
 GameObject:
@@ -2508,6 +2509,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39288205f5072e4f81816e946159b0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 3958857987525999341, guid: e7f2e13b9fa3ba74898813e27e56f303, type: 3}
+  playerSpawnPoint: {fileID: 2146354575}
   yellowGround:
   - {fileID: 1642646732}
   - {fileID: 69017746}
@@ -2518,9 +2521,8 @@ MonoBehaviour:
   - {fileID: 1437424566}
   - {fileID: 795382869}
   - {fileID: 756832906}
-  timeToHandle: 1
-  player: {fileID: 3958857987525999341, guid: e7f2e13b9fa3ba74898813e27e56f303, type: 3}
-  playerSpawnPoint: {fileID: 2146354575}
+  yellowActiveTime: 2
+  yellowInactiveTime: 1
   bot: {fileID: 595462320}
 --- !u!1 &1237644987
 GameObject:
